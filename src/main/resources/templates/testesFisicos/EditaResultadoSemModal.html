@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:brewer="http://brewer.algaworks.com">
+
+<head>
+<title>Cadastro de Avaliação Coletiva</title>
+<th:block layout:fragment="css-extra">
+	<link rel="stylesheet" type="text/css"
+		th:href="@{/stylesheets/pesquisa/bootstrap-select.css}" />
+
+
+</th:block>
+</head>
+<body>
+	<section layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-10">
+						<h1>Edição de Resultado</h1>
+
+					</div>
+
+					<div class="col-xs-2">
+						<div class="aw-page-header-controls">
+							<a class="btn  btn-primary" th:href="@{/testesFisicos}"> <i
+								class="glyphicon  glyphicon-search"></i> <span
+								class="hidden-xs  hidden-sm">Pesquisa</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+
+			<form method="POST" th:action="@{/testesFisicos/}"
+				th:object="${resultado}">
+				<brewer:message />
+				<!-- <div layout:include="MensagemGeral"></div>
+    	<div layout:include="MensagemErro"></div> -->
+
+
+				<input type="hidden" th:field="*{id}" /> 
+				<div class="row">
+
+					
+					<div class="form-group  col-sm-6  bw-required"
+						brewer:classforerror="valorProva1">
+						<label for="prova1" class="control-label"><span ></span></label> <input
+							type="text" class="form-control" id="prova1"
+							autofocus="autofocus" th:field="*{valorProva1}" />
+					</div>
+					
+
+
+				</div>
+
+			
+				
+		
+				<div class="row">
+					<div class="form-group col-sm-12">
+
+						<button type="submit" class="btn btn-primary">Salvar</button>
+						<a class="btn  btn-primary" th:href="@{/testesFisicos}">Voltar</a>
+
+					</div>
+				</div>
+
+
+
+
+			</form>
+		</div>
+
+		
+		
+		
+		
+		
+
+
+
+
+
+	</section>
+
+	<th:block layout:fragment="javascript-extra">
+
+		<script th:src="@{/javascripts/vendors/uikit.min.js}"></script>
+		<script th:src="@{/javascripts/provas-tipoteste-cadastro.js}"></script>
+		<script th:src="@{/javascripts/resultado-teste-cadastro.js}"></script>
+		<script th:src="@{/javascripts/resultado-edita.js}"></script>
+		<script th:src="@{/javascripts/bpchoque.js}"></script>
+		<script th:src="@{/javascripts/pesquisa/bootstrap-select.js}"></script>
+		<script th:src="@{/javascripts/formata-campo-tempo.js}"></script>
+
+
+
+
+	</th:block>
+
+</body>
+</html>

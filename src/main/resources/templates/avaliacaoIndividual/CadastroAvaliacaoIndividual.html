@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:brewer="http://brewer.algaworks.com">
+
+<head>
+<title>Cadastro de Avaliação Individual</title>
+<th:block layout:fragment="css-extra">
+	
+	<link rel="stylesheet" type="text/css"
+		th:href="@{/stylesheets/pesquisa/bootstrap-chosen.css}" />
+	<link rel="stylesheet" type="text/css"
+		th:href="@{/stylesheets/multiselect/bootstrap-select.min.css}" />
+</th:block>
+</head>
+
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-10">
+					<h1>Cadastro de Avaliação Individual</h1>
+				</div>
+
+				<div class="col-sm-2">
+					<div class="aw-page-header-controls">
+						<a class="btn  btn-primary" th:href="@{/avaliacoesIndividuais}">
+							<i class="glyphicon   glyphicon-search"></i> <span
+							class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+
+		<form method="POST" th:object="${avaliacaoIndividual}"
+			th:action="@{/avaliacoesIndividuais}">
+			<brewer:message />
+
+
+			<input type="hidden" th:field="*{id}" /> <input type="hidden"
+				th:field="*{criadopor}" /> <input type="hidden"
+				th:field="*{criadoem}" />
+			<div class="row">
+				<div class="form-group  col-sm-4  bw-required">
+					<label for="nome" class="control-label">Data Avaliação</label> <input
+						type="text" class="form-control" id="dataAvaliacao" name="data"
+						th:field="*{dataAvaliacao}" data-provide="datepicker"
+						data-date-language="pt-BR" data-date-autoclose="true"
+						data-date-today-highlight="true" data-date-orientation="bottom" />
+				</div>
+				<div class="form-group  col-sm-4  bw-required"
+					brewer:classforerror="pessoadef">
+					<label for="nome_guerra" class="control-label">Avaliado</label> <select
+						data-placeholder="Pesquisar" th:field="*{pessoadef}" id="avaliado"
+						class="chosen-select form-control" tabindex="7">
+						<option value=""></option>
+						<option th:each="pessoa : ${pessoas}" th:value="${pessoa.id}"
+							th:text="|${pessoa.matricula} - ${pessoa.nome}|"></option>
+
+					</select>
+				</div>
+				<div class="form-group  col-sm-4  bw-required"
+					brewer:classforerror="avaliador">
+					<label for="avaliador" class="control-label">Avaliador</label> <select
+						data-placeholder="Pesquisar" th:field="*{avaliador}"
+						id="avaliador" class="chosen-select form-control" tabindex="7">
+						<option value=""></option>
+						<option th:each="avaliador : ${avaliadores}"
+							th:value="${avaliador.id}"
+							th:text="|${avaliador.pessoadef.matricula} - ${avaliador.pessoadef.nome}|"></option>
+
+					</select>
+				</div>
+			</div>
+			<div class="row">
+
+				<ul class="nav nav-tabs">
+					<li class="active"><a data-toggle="tab"
+						href="#anamnese">Anamnese</a></li>
+					<li><a data-toggle="tab" href="#medidasAntropometricas">Medidas Antropométricas</a></li>
+					<li><a data-toggle="tab" href="#avaliacoesFisicas">Avaliações Físicas</a></li>
+				</ul>
+			</div>
+
+			<div class="tab-content">
+				<div id="anamnese" class="tab-pane fade in active">
+					<br />
+					<div class="row">
+						<div class="form-group  col-sm-3  bw-required"
+							brewer:classforerror="praticaTipoAtividade">
+							<label class="control-label">Pratica algum tipo de
+								Atividade Fisica?</label>
+							<div>
+								<div class="radio  radio-inline">
+									<input type="radio" th:id="civil"
+										th:field="*{praticaTipoAtividade}" th:value="true"> <label
+										class="control-label" th:for="sim">Sim</label>
+								</div>
+								<div class="radio  radio-inline">
+									<input type="radio" th:id="militar"
+										th:field="*{praticaTipoAtividade}" th:value="false"> <label
+										class="control-label" th:for="nao">Não</label>
+								</div>
+							</div>
+
+						</div>
+						<div class="form-group col-sm-3">
+							<label class="control-label">Qual Atividade?</label> <input
+								type="text" class="form-control" id="atividadeQual"
+								th:field="*{praticaTipoAtividadeQual}" />
+
+						</div>
+						<div class="form-group  col-sm-3 bw-required"
+							brewer:classforerror="frequencia">
+							<label for="frequencia" class="control-label">Qual
+								frequência?</label> <select id="opm" class="form-control"
+								th:field="*{frequencia}" name="frequencia">
+								<option value="">Selecione uma opção</option>
+								<option th:each="frequencia : ${frequencias}"
+									th:value="${frequencia}" th:text="${frequencia.descricao}"></option>
+							</select>
+						</div>
+						<div class="form-group  col-sm-3 bw-required"
+							brewer:classforerror="duracao">
+							<label for="duracao" class="control-label">Qual duração
+								por sessão?</label> <select id="duracao" class="form-control"
+								th:field="*{duracao}" name="duracao">
+								<option value="">Selecione uma opção</option>
+								<option th:each="duracao : ${duracoes}" th:value="${duracao}"
+									th:text="${duracao.descricao}"></option>
+							</select>
+						</div>
+
+
+
+					</div>
+					<div class="row">
+						<div class="form-group  col-sm-3 bw-required"
+							brewer:classforerror="objetivo">
+							<label for="objetivo" class="control-label">Quais
+								objetivos a serem alcançados?</label> <select id="objetivo"
+								class="form-control" th:field="*{objetivo}" name="objetivo">
+								<option value="">Selecione uma opção</option>
+								<option th:each="objetivo : ${objetivos}" th:value="${objetivo}"
+									th:text="${objetivo.descricao}"></option>
+							</select>
+						</div>
+
+						<div class="form-group col-sm-3">
+							<label class="control-label">Outro objetivo:</label> <input
+								type="text" class="form-control" id="objetivoOutro"
+								th:field="*{objetivoOutro}" />
+
+						</div>
+						<div class="form-group  col-sm-3  bw-required"
+							brewer:classforerror="restricao">
+							<label class="control-label">Possui alguma restrição da
+								prática de atividade física?</label>
+							<div>
+								<div class="radio  radio-inline">
+									<input type="radio" th:id="restricaoSim"
+										th:field="*{restricao}" th:value="true"> <label
+										class="control-label" th:for="sim">Sim</label>
+								</div>
+								<div class="radio  radio-inline">
+									<input type="radio" th:id="restricaoNao"
+										th:field="*{restricao}" th:value="false"> <label
+										class="control-label" th:for="nao">Não</label>
+								</div>
+							</div>
+
+						</div>
+						<div class="form-group col-sm-3">
+							<label class="control-label">Qual restrição?</label> <input
+								type="text" class="form-control" id="restricaoQual"
+								th:field="*{restricaoQual}" />
+
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group  col-sm-4  bw-required"
+							brewer:classforerror="fuma">
+							<label class="control-label">Você fuma?</label>
+							<div>
+								<div class="radio  radio-inline">
+									<input type="radio" th:id="fumaSim" th:field="*{fuma}"
+										th:value="true"> <label class="control-label"
+										th:for="fumaSim">Sim</label>
+								</div>
+								<div class="radio  radio-inline">
+									<input type="radio" th:id="restricaoNao" th:field="*{fuma}"
+										th:value="false"> <label class="control-label"
+										th:for="fumaNao">Não</label>
+								</div>
+							</div>
+
+						</div>
+						<div class="form-group  col-sm-4  bw-required"
+							brewer:classforerror="bebidaAlcoolica">
+							<label class="control-label">Faz uso de bebidas
+								alcoólicas?</label>
+							<div>
+								<div class="radio  radio-inline">
+									<input type="radio" th:id="bebidaSim"
+										th:field="*{bebidaAlcoolica}" th:value="true"> <label
+										class="control-label" th:for="bebidaSim">Sim</label>
+								</div>
+								<div class="radio  radio-inline">
+									<input type="radio" th:id="bebidaNao"
+										th:field="*{bebidaAlcoolica}" th:value="false"> <label
+										class="control-label" th:for="bebidaNao">Não</label>
+								</div>
+							</div>
+
+						</div>
+						<div class="form-group  col-sm-4  bw-required"
+							brewer:classforerror="medicamento">
+							<label class="control-label">Faz uso de algum
+								medicamento?</label>
+							<div>
+								<div class="radio  radio-inline">
+									<input type="radio" th:id="medicamentoSim"
+										th:field="*{medicamento}" th:value="true"> <label
+										class="control-label" th:for="medicamentoSim">Sim</label>
+								</div>
+								<div class="radio  radio-inline">
+									<input type="radio" th:id="medicamentoNao"
+										th:field="*{medicamento}" th:value="false"> <label
+										class="control-label" th:for="medicamentoNao">Não</label>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-sm-4  bw-required"
+							brewer:classforerror="medicamentoMotivo">
+							<label class="control-label">Qual motivo da medicação?</label> <input
+								type="text" class="form-control" id="medicamentoMotivo"
+								th:field="*{medicamentoMotivo}" />
+
+						</div>
+						<div class="form-group col-sm-4  bw-required"
+							brewer:classforerror="medicamentoQual">
+							<label class="control-label">Qual a medicação?</label> <input
+								type="text" class="form-control" id="medicamentoQual"
+								th:field="*{medicamentoQual}" />
+
+						</div>
+						<div class="form-group col-sm-4  bw-required"
+							brewer:classforerror="medicamentoDosagem">
+							<label class="control-label">Qual a Dosagem?</label> <input
+								type="text" class="form-control" id="medicamentoDosagem"
+								th:field="*{medicamentoDosagem}" />
+
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group  col-sm-4 bw-required"
+							brewer:classforerror="problemas">
+							<label for="objetivo" class="control-label">Selecione os
+								problemas que possuir!</label> <select id="problemas"
+								class="selectpicker form-control" data-width="fit"
+								multiple="true" th:field="*{problemas}" name="problemas"
+								title="Escolha os problemas...">
+								<option value="">Selecione uma opção</option>
+								<option th:each="problema : ${problemas}" th:value="${problema}"
+									th:text="${problema.descricao}"></option>
+							</select>
+						</div>
+					</div>
+
+
+				</div>
+				<div id="medidasAntropometricas" class="tab-pane fade">
+					<br />
+					<div class="container-fluid">
+
+						<div class="table-responsive">
+							<table id="example" class="table table-striped table-condensed"
+								cellspacing="0" width="100%">
+								<thead>
+									<tr>
+										<th>Data</th>
+										<th>Torax</th>
+										<th>Cintura</th>
+										<th>Abdominal</th>
+										<th>Quadril</th>
+										<th>Braço E</th>
+										<th>Braço D</th>
+										<th>Coxa E</th>
+										<th>Coxa D</th>
+										<th></th>
+
+
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="medicao : ${medicoes}">
+										<td th:text="${medicao?.criadoem}">1</td>
+										<td th:text="${medicao?.torax}">Data</td>
+										<td th:text="${medicao?.cintura}">Matricula</td>
+										<td th:text="${medicao?.abdominal}">numero</td>
+										<td th:text="${medicao?.quadril}">cargo</td>
+										<td th:text="${medicao?.bracoe}">nome</td>
+										<td th:text="${medicao?.bracod}">nome</td>
+										<td th:text="${medicao?.coxae}">nome</td>
+										<td th:text="${medicao?.coxad}">nome</td>
+
+										<td class="text-center"><a class="btn btn-link btn-xs"
+											th:href="@{/avaliacoesIndividuais/medicoes/{id}(id=${medicao.id})}"
+											title="Editar" rel="tooltip" data-placement="top"> <span
+												class="glyphicon glyphicon-pencil"></span>
+										</a> <a class="btn btn-link btn-xs" data-toggle="modal"
+											data-target="#myModalExclusao"
+											th:attr="data-id=${medicao.id}, data-nome=${medicao.avaliacaoindividual.pessoadef.nome}"
+											title="Excluir" rel="tooltip" data-placement="top"> <span
+												class="glyphicon glyphicon-remove"></span>
+										</a></td>
+									</tr>
+
+								</tbody>
+							</table>
+							<br />
+							<a class="btn  btn-primary" th:href="@{/avaliacoesIndividuais/medicoes/novo}">Adicionar medição</a>
+							
+						</div>
+
+
+
+					</div>
+					
+					
+				</div>
+				<div id="avaliacoesFisicas" class="tab-pane fade">
+					<br />
+					
+				</div>
+
+			</div>
+			<br>
+			<button type="submit" class="btn  btn-primary">Salvar</button>
+			<a class="btn  btn-primary" th:href="@{/avaliacoesIndividuais}">Voltar</a>
+		</form>
+		<div class="modal fade" id="myModalExclusao" tabindex="-1"
+			data-keyboard="false" data-backdrop="static">
+			<div class="modal-dialog">
+				<form
+					th:attr="data-url-base=@{/avaliacoesIndividuais/medicoes/delete/}, data-tipo='a medicão'"
+					method="get">
+
+
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title">Você tem certeza?</h4>
+						</div>
+
+						<div class="modal-body">
+							<span>Tem certeza que deseja apagar a medicão?</span>
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-link" data-dismiss="modal">Cancelar</button>
+							<button type="submit" class="btn btn-primary">Excluir</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div th:replace="avaliacaoIndividual/CadastroMedicoes :: modal"></div>
+</section>
+
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/medicao.cadastro-rapido.js}"></script>
+	<script th:src="@{/javascripts/pesquisa/chosen.jquery.min.js}"></script>
+	<script th:src="@{/javascripts/multiselect/bootstrap-select.js}"></script>
+	<script>
+		$('.chosen-select').chosen();
+	</script>
+</th:block>
+
+</html>

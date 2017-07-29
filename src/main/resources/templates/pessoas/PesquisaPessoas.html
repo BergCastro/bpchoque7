@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:brewer="http://brewer.algaworks.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+
+<head>
+<title>Pesquisa de Pessoas</title>
+<th:block layout:fragment="css-extra">
+	<link rel="stylesheet" type="text/css"
+		th:href="@{/stylesheets/datatable/dataTables.bootstrap.min.css}" />
+
+</th:block>
+</head>
+
+<body>
+	<section layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-10">
+						<h1>Pesquisa de Pessoas</h1>
+					</div>
+
+					<div class="col-xs-2">
+						<div class="aw-page-header-controls">
+							<a class="btn  btn-default" th:href="@{/pessoas/novo}"> <i
+								class="glyphicon  glyphicon-plus-sign"></i> <span
+								class="hidden-xs  hidden-sm">Nova pessoa</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+			
+			<div class="table-responsive">
+				<table id="example"
+					class="table table-bordered table-striped table-condensed"
+					cellspacing="0" width="100%">
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Matrícula/Ident.</th>
+							<th>Número</th>
+							<th>Post./Grad.</th>
+							<th>Nome</th>
+							<th>Opm/Orgão</th>
+							<th></th>
+
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="pessoa : ${pessoas}">
+							<td th:text="${pessoa?.id}">1</td>
+							<td th:text="${pessoa?.matricula}">Matricula</td>
+							<td th:text="${pessoa?.numero_pm}">numero</td>
+							<td th:text="${pessoa?.cargo.abreviacao}">cargo</td>
+							<td th:text="${pessoa?.nome}">nome</td>
+							<td th:text="${pessoa?.opm_orgao.nome}">orgao</td>
+							<td class="text-center"><a class="btn btn-link btn-xs"
+								th:href="@{/pessoas/{id}(id=${pessoa.id})}" title="Editar"
+								rel="tooltip" data-placement="top"> <span
+									class="glyphicon glyphicon-pencil"></span>
+							</a> <a class="btn btn-link btn-xs" data-toggle="modal"
+								data-target="#myModalExclusao"
+								th:attr="data-id=${pessoa.id}, data-nome=${pessoa.nome}"
+								title="Excluir" rel="tooltip" data-placement="top"> <span
+									class="glyphicon glyphicon-remove"></span>
+							</a></td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+
+
+
+		</div>
+		<div class="modal fade" id="myModalExclusao" tabindex="-1"
+			data-keyboard="false" data-backdrop="static">
+			<div class="modal-dialog">
+				<form
+					th:attr="data-url-base=@{/pessoas/delete/}, data-tipo='a pessoa '"
+					method="get">
+
+
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title">Você tem certeza?</h4>
+						</div>
+
+						<div class="modal-body">
+							<span>Tem certeza que deseja apagar o pessoa?</span>
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-link" data-dismiss="modal">Cancelar</button>
+							<button type="submit" class="btn btn-primary">Excluir</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+	<th:block layout:fragment="javascript-extra">
+		<script th:src="@{/javascripts/bpchoque.js}"></script>
+		<script th:src="@{/javascripts/datatable/jquery.dataTables.min.js}"></script>
+		<script th:src="@{/javascripts/datatable/dataTables.bootstrap.min.js}"></script>
+		<script th:src="@{/javascripts/datatable/iniciaAndTraduz.js}"></script>
+	</th:block>
+</body>
+</html>

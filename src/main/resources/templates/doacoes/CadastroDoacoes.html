@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:brewer="http://brewer.algaworks.com">
+
+<head>
+<title>Cadastro de Doação</title>
+</head>
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Cadastro de Doação</h1>
+
+				</div>
+
+				<div class="col-xs-2">
+					<div class="aw-page-header-controls">
+						<a class="btn  btn-primary" th:href="@{/doacoes}"> <i
+							class="glyphicon  glyphicon-search"></i> <span
+							class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid">
+
+		<form method="POST" th:action="@{/doacoes}" th:object="${doacao}">
+			<brewer:message />
+			<!-- <div layout:include="MensagemGeral"></div>
+    	<div layout:include="MensagemErro"></div> -->
+
+
+			<input type="hidden" th:field="*{id}" /> <input type="hidden"
+				th:field="*{criadopor}" /> <input type="hidden"
+				th:field="*{criadoem}" />
+			<div class="row">
+				<div class="form-group  col-sm-4  bw-required">
+					<label for="dataDoacao" class="control-label">Data</label> <input
+						type="text" class="form-control" id="dataDoacao" name="dataDoacao"
+						th:field="*{dataDoacao}" data-provide="datepicker"
+						data-date-language="pt-BR" data-date-autoclose="true"
+						data-date-today-highlight="true" data-date-orientation="bottom" />
+				</div>
+
+				<div class="form-group  col-sm-8  bw-required"
+					brewer:classforerror="doador">
+					<label for="doador" class="control-label">Doador</label> <input
+						type="text" class="form-control" id="dataDoador"
+						autofocus="autofocus" th:field="*{doador}" />
+				</div>
+
+			</div>
+
+
+			<div class="table-responsive">
+				<table class="table  table-hover table-condensed table-striped">
+					<thead>
+						<tr>
+							
+							<th>Tipo</th>
+							<th>Valor/Quantidade</th>
+							<th>Descrição</th>
+							<th></th>
+						</tr>
+					</thead>
+
+					<tbody id="listaDetalhe">
+						<tr th:each="detalhe : ${detalhes}" >
+							
+							<td th:text="${detalhe.tipo}">Tipo</td>
+							<td th:text="${detalhe.quantidade}">Quantidade</td>
+							<td th:text="${detalhe.descricao}">Descrição</td>
+							<td class="text-center"><a class="btn btn-link btn-xs" data-toggle="modal"
+							data-target="#myModalExclusaoDetalhe"
+							th:attr="data-id=${detalhe.id}, data-descricao=${detalhe.descricao}"
+							title="Excluir" rel="tooltip" data-placement="top"> <span
+								class="glyphicon glyphicon-remove"></span>
+						</a></td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+
+
+			<div class="bw-field-action__icon">
+				<a href="#" data-toggle="modal"
+					data-target="#modalCadastroItemDoacao"> <i
+					class="glyphicon  glyphicon-plus-sign"></i> <span
+					class="hidden-xs  hidden-sm">Adicionar Item</span>
+				</a>
+			</div>
+			<br>
+
+			<div class="row">
+				<div class="form-group col-sm-12">
+
+					<button type="submit" class="btn btn-primary">Salvar</button>
+					<a class="btn  btn-primary" th:href="@{/doacoes}">Voltar</a>
+
+				</div>
+			</div>
+
+
+
+
+		</form>
+	</div>
+	<div th:replace="doacoes/CadastroItemDoacao :: modal"></div>
+	<div th:replace="doacoes/ConfirmaExclusaoDoacaoDetalhe :: modalDetalhe"></div>
+</section>
+	<th:block layout:fragment="javascript-extra">
+		<script th:src="@{/javascripts/detalhe-doacao.cadastro.js}"></script>
+		<script th:src="@{/javascripts/bpchoque.js}"></script>
+		
+
+	</th:block>
+</body>
+</html>

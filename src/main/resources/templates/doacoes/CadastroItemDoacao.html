@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:brewer="http://brewer.algaworks.com">
+<body>
+	<div class="modal fade" id="modalCadastroItemDoacao" tabindex="-1"
+		role="dialog" th:fragment="modal">
+		<div class="modal-dialog  ">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Cadastro Item de Doação</h4>
+				</div>
+
+				<div class="modal-body">
+					<div
+						class="alert  alert-danger  hidden  js-mensagem-cadastro-detalhe"
+						role="alert"></div>
+					
+					<form th:action="@{/doacoes/detalheNovo}">
+						
+						<div class="form-group">
+							
+								<label for="tipo" class="control-label">Tipo</label> <select
+									id="tipo" class="form-control">
+<!-- 									<option value="">Selecione um tipo</option> -->
+									<option th:each="tipo : ${tipos}" th:value="${tipo}"
+										th:text="${tipo.descricao}">Descricao</option>
+								</select>
+							
+						</div>
+						<div class="form-group">
+							<label class="control-label" for="quantidade">Quantidade</label>
+							<input id="quantidade" type="number" min="1" max="100000"class="form-control">
+							
+						</div>
+						<div class="form-group">
+							<label class="control-label" for="descricao">Descrição</label>
+							<input id="descricao" type="text" class="form-control">
+							
+						</div>
+						
+					</form>
+
+					<button type="button"
+						class="btn  btn-primary  js-modal-cadastro-detalhe-salvar-btn">Adicionar</button>
+					<button type="button" class="btn  btn-default" data-dismiss="modal">Cancelar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

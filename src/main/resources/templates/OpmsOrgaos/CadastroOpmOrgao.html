@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:brewer="http://brewer.algaworks.com">
+
+<head>
+<title>Cadastro de OPM</title>
+</head>
+
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Cadastro de OPM</h1>
+					
+				</div>
+
+				<div class="col-xs-2">
+					<div class="aw-page-header-controls">
+						<a class="btn  btn-primary" th:href="@{/opms}"> <i
+							class="glyphicon   glyphicon-search"></i> <span
+							class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<form method="POST" th:action="@{/opms}" th:object="${opmOrgao}">
+			<brewer:message/>
+			<input type="hidden" th:field="*{id}" />
+			<input type="hidden" th:field="*{criadopor}" />
+			<input type="hidden" th:field="*{criadoem}" />
+			<div class="row">
+				<div class="form-group  col-sm-4  bw-required"
+					brewer:classforerror="nome">
+					<label for="nome" class="control-label">OPM/Orgão</label> <input
+						type="text" class="form-control" id="nome" autofocus="autofocus"
+						th:field="*{nome}" />
+				</div>
+				<div class="form-group  col-sm-4  bw-required"
+					brewer:classforerror="localizacao">
+					<label for="localizacao" class="control-label">Localização</label>
+					<input type="text" class="form-control" id="abreviacao"
+						th:field="*{localizacao}" />
+				</div>
+				<div class="form-group col-sm-4 bw-required"
+					brewer:classforerror="tipo">
+					<label for="tipo" class="control-label">Tipo</label> 
+					<select	class="form-control" name="tipo" th:field="*{tipo}">
+						<option value="">Selecione uma opção</option>
+						<option th:each="tipo : ${tiposOpms}" th:value="${tipo}"
+							th:text="${tipo.descricao}"></option>
+					</select>
+
+				</div>
+
+			</div>
+
+			<div class="row">
+				<div class="form-group col-sm-12">
+				<button type="submit" class="btn btn-primary">Salvar</button>
+				<a class="btn  btn-primary" th:href="@{/opms}">Voltar</a>
+				</div>
+			</div>
+
+
+		</form>
+	</div>
+
+</section>
+</html>

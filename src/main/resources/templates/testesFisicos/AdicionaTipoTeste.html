@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:brewer="http://brewer.algaworks.com">
+<body>
+	<div class="modal fade" id="modalCadastroProvaTipo" tabindex="-1"
+		role="dialog" th:fragment="modalAdicionaTipo">
+		<div class="modal-dialog  ">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Inclusão de Tipo de Teste</h4>
+				</div>
+
+				<div class="modal-body">
+					<div
+						class="alert  alert-danger  hidden  js-mensagem-cadastro-prova"
+						role="alert"></div>
+					
+					<form th:action="@{/testesFisicos/tipoNovo}">
+						
+						<div class="form-group">
+							
+								<label for="prova" class="control-label">Tipo de Teste</label> <select
+									id="prova" class="form-control">
+<!-- 									<option value="">Selecione um tipo</option> -->
+									<option th:each="tipo : ${tiposIncluir}" th:value="${tipo.id}"
+										th:text="${tipo.nome}">Prova</option>
+								</select>
+							
+						</div>
+						
+						
+					</form>
+
+					<button type="button"
+						class="btn  btn-primary  js-modal-cadastro-prova-salvar-btn">Adicionar</button>
+					<button type="button" class="btn  btn-default" data-dismiss="modal">Cancelar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

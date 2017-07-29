@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="~{layout/LayoutPadrao}">
+
+<head>
+<title>Cargos</title>
+	<th:block layout:fragment="css-extra">
+		<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/datatable/dataTables.bootstrap.min.css}"/>
+
+	</th:block>
+</head>
+
+<section layout:fragment="conteudo">
+	<!-- <div layout:include="MensagemGeral"></div> -->
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Pesquisa de Cargos</h1>
+				</div>
+
+				<div class="col-xs-2">
+					<div class="aw-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/cargos/novo}"> <i
+							class="glyphicon  glyphicon-plus-sign"></i> <span
+							class="hidden-xs  hidden-sm">Novo Cargo</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<div class="container-fluid">
+
+		<div class="table-responsive">
+			<table id="example"
+				class="table table-bordered table-striped table-condensed"
+				cellspacing="0" width="100%">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Nome</th>
+						<th>Abreviação</th>
+						<th></th>
+
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="cargo : ${cargos}">
+						<td th:text="${cargo?.id}">1</td>
+						<td th:text="${cargo?.nome}">nome</td>
+						<td th:text="${cargo?.abreviacao}">abreviacao</td>
+						<td class="text-center"><a class="btn btn-link btn-xs"
+							th:href="@{/cargos/{id}(id=${cargo.id})}" title="Editar"
+							rel="tooltip" data-placement="top"> <span
+								class="glyphicon glyphicon-pencil"></span>
+						</a> <a class="btn btn-link btn-xs" data-toggle="modal"
+							data-target="#myModalExclusao"
+							th:attr="data-id=${cargo.id}, data-nome=${cargo.nome}"
+							title="Excluir" rel="tooltip" data-placement="top"> <span
+								class="glyphicon glyphicon-remove"></span>
+						</a></td>
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="modal fade" id="myModalExclusao" tabindex="-1"
+		data-keyboard="false" data-backdrop="static">
+		<div class="modal-dialog">
+			<form
+				th:attr="data-url-base=@{/cargos/delete/}, data-tipo='o cargo '"
+				method="get">
+
+
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Você tem certeza?</h4>
+					</div>
+
+					<div class="modal-body">
+						<span>Tem certeza que deseja apagar o cargo?</span>
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-link" data-dismiss="modal">Cancelar</button>
+						<button type="submit" class="btn btn-primary">Excluir</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+
+
+</section>
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/bpchoque.js}"></script>
+	<script th:src="@{/javascripts/datatable/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/javascripts/datatable/dataTables.bootstrap.min.js}"></script>
+	<script th:src="@{/javascripts/datatable/iniciaAndTraduz.js}"></script>
+</th:block>
+</html>

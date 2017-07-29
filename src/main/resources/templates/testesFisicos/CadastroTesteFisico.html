@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:brewer="http://brewer.algaworks.com">
+
+<head>
+<title>Cadastro de Avaliação Coletiva</title>
+<th:block layout:fragment="css-extra">
+	<link rel="stylesheet" type="text/css"
+		th:href="@{/stylesheets/pesquisa/bootstrap-select.css}" />
+
+
+</th:block>
+</head>
+<body>
+	<section layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-10">
+						<h1>Cadastro de Avaliação Coletiva</h1>
+
+					</div>
+
+					<div class="col-xs-2">
+						<div class="aw-page-header-controls">
+							<a class="btn  btn-primary" th:href="@{/testesFisicos}"> <i
+								class="glyphicon  glyphicon-search"></i> <span
+								class="hidden-xs  hidden-sm">Pesquisa</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+
+			<form method="POST" th:action="@{/testesFisicos}"
+				th:object="${testeFisico}">
+				<brewer:message />
+				<!-- <div layout:include="MensagemGeral"></div>
+    	<div layout:include="MensagemErro"></div> -->
+
+
+				<input type="hidden" th:field="*{id}" /> <input type="hidden"
+					th:field="*{criadopor}" /> <input type="hidden"
+					th:field="*{criadoem}" /> <input type="hidden" th:field="*{tipos}" />
+				<div class="row">
+
+					<div class="form-group  col-sm-4  bw-required">
+						<label for="data" class="control-label">Data</label> <input
+							type="text" class="form-control" id="data" name="data"
+							th:field="*{data}" data-provide="datepicker"
+							data-date-language="pt-BR" data-date-autoclose="true"
+							data-date-today-highlight="true" data-date-orientation="bottom" />
+					</div>
+					<div class="form-group  col-sm-6  bw-required"
+						brewer:classforerror="objetivo">
+						<label for="nome" class="control-label">Objetivo</label> <input
+							type="text" class="form-control" id="objetivo"
+							autofocus="autofocus" th:field="*{objetivo}" />
+					</div>
+					<div class="form-group  col-sm-2  bw-required"
+						brewer:classforerror="notaAprovacao">
+						<label for="notaAprovacao" class="control-label">Nota de
+							Aprovação</label> <input type="text" class="form-control js-decimal"
+							id="notaAprovacao" th:field="*{notaAprovacao}" />
+					</div>
+
+
+				</div>
+
+				<div th:if="${testeFisicoSalvo}">
+					<div class="table-responsive">
+						<table class="table  table-hover table-condensed table-resultados">
+							<thead>
+								<tr>
+
+									<th>Tipo de Teste</th>
+									<th>Descrição</th>
+									<th></th>
+								</tr>
+							</thead>
+
+							<tbody id="listaTipos">
+								<tr th:each="tipo : *{tipos}">
+
+									<td th:text="${tipo.nome}">NOME</td>
+									<td th:text="${tipo.descricao}">Descricao</td>
+
+									<td class="text-center"><a class="btn btn-link btn-xs"
+										th:href="@{/relatorios/testesPorTipo/{idTeste}/{idTipo}(idTipo=${tipo.id}, idTeste=*{id})}"
+										title="Relatório" rel="tooltip" data-placement="top"
+										target="_blank"> <span class="glyphicon glyphicon-print"></span>
+									</a><a class="btn btn-link btn-xs" data-toggle="modal"
+										data-target="#myModalExclusaoTipo"
+										th:attr="data-id=${tipo.id}, data-nome=${tipo.nome}"
+										title="Excluir" rel="tooltip" data-placement="top"> <span
+											class="glyphicon glyphicon-remove"></span>
+									</a></td>
+								</tr>
+
+							</tbody>
+						</table>
+					</div>
+
+
+					<div class="bw-field-action__icon">
+						<a href="#" data-toggle="modal"
+							data-target="#modalCadastroProvaTipo"> <i
+							class="glyphicon  glyphicon-plus-sign"></i> <span
+							class="hidden-xs  hidden-sm">Adicionar Tipo</span>
+						</a>
+					</div>
+				</div>
+				<br>
+				<div class="" th:if="${temTipo}">
+					<ul class="nav nav-tabs">
+
+						<li th:class="${iter.first}? 'active'"
+							th:each="tipo,iter : *{tipos}"><a data-toggle="tab"
+							th:href="|#${iter.count}|"><span th:utext="${tipo.nome}"></span></a>
+						</li>
+						<li><a data-toggle="tab" href="#comissao"><span>COMISSÃO</span></a>
+						</li>
+
+					</ul>
+					<div id="resultsBlock">
+						<div th:fragment="resultadosFrag" class="tab-content">
+							<div th:each="tipo,iter: ${tipos}" th:id="${iter.count}"
+								class="tab-pane fade"
+								th:class="${iter.first}? 'tab-pane fade in active': 'tab-pane fade'">
+
+								<div class="table-responsive">
+									<table
+										class="table  table-hover table-condensed table-striped table-resultados">
+										<thead>
+											<tr>
+												<th>MATRÍCULA</th>
+												<th>NOME</th>
+												<th th:if=${tipo.variaSexo}>SEXO</th>
+												<th th:if=${tipo.variaIdade}>IDADE</th>
+
+												<th th:each="prova, iterProvas : ${tipo.provas}"><span
+													th:utext="${prova.nome}"></span></th>
+												<th>NOTA</th>
+												<th></th>
+											</tr>
+										</thead>
+
+										<tbody id="listaDetalhe">
+
+											<tr th:each="resultado : ${resultados}">
+
+												<td th:text="${resultado.pessoa.matricula}"
+													th:if="${resultado.tipoTeste.id}==${tipo.id}">Matricula</td>
+												<td th:text="${resultado.pessoa.nome}"
+													th:if="${resultado.tipoTeste.id}==${tipo.id}">Nome</td>
+												<td  th:text="${resultado.pessoa.sexo.abreviacao}"
+													th:if="${resultado.tipoTeste.id}==${tipo.id} and ${tipo.variaSexo}">Sexo</td>
+												<td th:text="${resultado.idade}"
+													th:if="${resultado.tipoTeste.id}==${tipo.id} and ${tipo.variaIdade}">Idade</td>
+
+												<td
+													th:text="|${resultado.valorProva1} -- ${resultado.pontuacaoProva1} pts|"
+													th:if="${tipo.qtdProvas}>=1 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva1}=='INTEIRO'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva1} -- ${resultado.pontuacaoProva1} pts|"
+													th:if="${tipo.qtdProvas}>=1 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva1}=='APTOINAPTO'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva1} -- ${resultado.pontuacaoProva1} pts|"
+													th:if="${tipo.qtdProvas}>=1 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva1}=='TEMPO'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva1} -- ${resultado.pontuacaoProva1} pts|"
+													th:if="${tipo.qtdProvas}>=1 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva1}=='TEMPO_MIN'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva1} -- ${resultado.pontuacaoProva1} pts|"
+													th:if="${tipo.qtdProvas}>=1 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva1}=='TENTATIVA'">Nome</td>
+
+
+												<td
+													th:text="|${resultado.valorProva2} -- ${resultado.pontuacaoProva2} pts|"
+													th:if="${tipo.qtdProvas}>=2 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva2}=='INTEIRO'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva2} -- ${resultado.pontuacaoProva2} pts|"
+													th:if="${tipo.qtdProvas}>=2 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva2}=='APTOINAPTO'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva2} -- ${resultado.pontuacaoProva2} pts|"
+													th:if="${tipo.qtdProvas}>=2 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva2}=='TEMPO'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva2} -- ${resultado.pontuacaoProva2} pts|"
+													th:if="${tipo.qtdProvas}>=2 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva2}=='TEMPO_MIN'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva2} -- ${resultado.pontuacaoProva2} pts|"
+													th:if="${tipo.qtdProvas}>=2 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva2}=='TENTATIVA'">Nome</td>
+
+
+												<td
+													th:text="|${resultado.valorProva3} -- ${resultado.pontuacaoProva3} pts|"
+													th:if="${tipo.qtdProvas}>=3 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva3}=='INTEIRO'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva3} -- ${resultado.pontuacaoProva3} pts|"
+													th:if="${tipo.qtdProvas}>=3 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva3}=='APTOINAPTO'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva3} -- ${resultado.pontuacaoProva3} pts|"
+													th:if="${tipo.qtdProvas}>=3 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva3}=='TEMPO'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva3} -- ${resultado.pontuacaoProva3} pts|"
+													th:if="${tipo.qtdProvas}>=3 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva3}=='TEMPO_MIN'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva3} -- ${resultado.pontuacaoProva3} pts|"
+													th:if="${tipo.qtdProvas}>=3 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva3}=='TENTATIVA'">Nome</td>
+
+												<td
+													th:text="|${resultado.valorProva4} -- ${resultado.pontuacaoProva4} pts|"
+													th:if="${tipo.qtdProvas}>=4 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva4}=='INTEIRO'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva4} -- ${resultado.pontuacaoProva4} pts|"
+													th:if="${tipo.qtdProvas}>=4 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva4}=='APTOINAPTO'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva4} -- ${resultado.pontuacaoProva4} pts|"
+													th:if="${tipo.qtdProvas}>=4 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva4}=='TEMPO'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva4} -- ${resultado.pontuacaoProva4} pts|"
+													th:if="${tipo.qtdProvas}>=4 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva4}=='TEMPO_MIN'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva4} -- ${resultado.pontuacaoProva4} pts|"
+													th:if="${tipo.qtdProvas}>=4 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva4}=='TENTATIVA'">Nome</td>
+
+
+												<td
+													th:text="|${resultado.valorProva5} -- ${resultado.pontuacaoProva5} pts|"
+													th:if="${tipo.qtdProvas}>=5 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva5}=='INTEIRO'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva5} -- ${resultado.pontuacaoProva5} pts|"
+													th:if="${tipo.qtdProvas}>=5 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva5}=='APTOINAPTO'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva5} -- ${resultado.pontuacaoProva5} pts|"
+													th:if="${tipo.qtdProvas}>=5 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva5}=='TEMPO'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva5} -- ${resultado.pontuacaoProva5} pts|}"
+													th:if="${tipo.qtdProvas}>=5 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva5}=='TEMPO_MIN'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva5} -- ${resultado.pontuacaoProva5} pts|"
+													th:if="${tipo.qtdProvas}>=5 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva5}=='TENTATIVA'">Nome</td>
+
+
+												<td
+													th:text="|${resultado.valorProva6} -- ${resultado.pontuacaoProva6} pts|"
+													th:if="${tipo.qtdProvas}>=6 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva6}=='INTEIRO'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva6} -- ${resultado.pontuacaoProva6} pts|"
+													th:if="${tipo.qtdProvas}>=6 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva6}=='APTOINAPTO'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva6} -- ${resultado.pontuacaoProva6} pts|"
+													th:if="${tipo.qtdProvas}>=6 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva6}=='TEMPO'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva6} -- ${resultado.pontuacaoProva6} pts|}"
+													th:if="${tipo.qtdProvas}>=6 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva6}=='TEMPO_MIN'">Nome</td>
+												<td
+													th:text="|${resultado.valorProva6} -- ${resultado.pontuacaoProva6} pts|"
+													th:if="${tipo.qtdProvas}>=6 and ${resultado.tipoTeste.id}==${tipo.id} and ${resultado.tipoPontuacaoProva6}=='TENTATIVA'">Nome</td>
+
+												<td th:if="${resultado.tipoTeste.id}==${tipo.id}"
+													th:text="${resultado.notaFinal}">Nota</td>
+												<td class="text-center"
+													th:if="${resultado.tipoTeste.id}==${tipo.id}"><a class="btn-editar2"
+													th:href="@{/testesFisicos/editaResultadoTemp/{id}(id=${resultado.id})}" th:attr="data-resultado=${resultado.id}"> <i
+														class="glyphicon  glyphicon-pencil"></i>
+												</a> <a
+													class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn"
+													th:title="Excluir" href="#"
+													th:attr="data-url=@{/testesFisicos/deleteResultado/{id}(id=${resultado.id})}, data-objeto=|o resultado de ${resultado.pessoa.nome}|">
+														<i class="glyphicon glyphicon-remove"></i>
+												</a></td>
+											</tr>
+
+										</tbody>
+									</table>
+									<div class="bw-field-action__icon">
+										<a href="#" data-toggle="modal"
+											data-target="#modalAdicionaResultado"
+											th:attr="data-tipo=${tipo.id}"> <i
+											class="glyphicon  glyphicon-plus-sign"></i> <span
+											class="hidden-xs  hidden-sm">Adicionar Resultado</span>
+										</a>
+									</div>
+									<br>
+
+								</div>
+
+							</div>
+
+							<div th:id="comissao" class="tab-pane fade">
+
+								<div class="table-responsive">
+									<table
+										class="table  table-hover table-condensed table-striped table-resultados">
+										<thead>
+											<tr>
+												<th>MATRÍCULA</th>
+												<th>NOME</th>
+												<th>FUNÇÃO</th>
+												<th></th>
+											</tr>
+										</thead>
+
+										<tbody id="listaDetalheComissao">
+
+											<tr th:each="membro : ${comissao}">
+
+												<td th:text="${membro.avaliador.pessoadef.matricula}">Matricula</td>
+												<td th:text="${membro.avaliador.pessoadef.nome}">Nome</td>
+												<td th:text="${membro.funcao}">Função</td>
+
+
+
+
+												<td class="text-center"><a
+													class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn"
+													th:title="Excluir" href="#"
+													th:attr="data-url=@{/comissoes/deleteMembro/{id}(id=${membro.id})}, data-objeto=|o membro de ${membro.avaliador.pessoadef.nome}|">
+														<i class="glyphicon glyphicon-remove"></i>
+												</a></td>
+											</tr>
+
+										</tbody>
+									</table>
+									<div class="bw-field-action__icon">
+										<a href="#" data-toggle="modal"
+											data-target="#modalAdicionaMembroComissao"> <i
+											class="glyphicon  glyphicon-plus-sign"></i> <span
+											class="hidden-xs  hidden-sm">Adicionar Membro</span>
+										</a>
+									</div>
+									<br>
+
+								</div>
+
+							</div>
+
+
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group col-sm-12">
+
+						<button type="submit" class="btn btn-primary">Salvar</button>
+						<a class="btn  btn-primary" th:href="@{/testesFisicos}">Voltar</a>
+
+					</div>
+				</div>
+
+
+
+
+			</form>
+		</div>
+
+		<div th:replace="testesFisicos/AdicionaTipoTeste :: modalAdicionaTipo"></div>
+		<div th:replace="testesFisicos/AdicionaResultado :: modalAdicionaResultado"></div>
+		
+		
+		<div   th:replace="testesFisicos/EditaResultado :: modalEditaResultado"></div>
+		
+		
+
+		
+		<!-- fim do modal -->
+
+
+
+		<div
+			th:replace="testesFisicos/ConfirmaExclusaoTipoTeste :: modalDetalhe"></div>
+		<div
+			th:replace="testesFisicos/ConfirmaExclusaoResultado :: modalExclusao"></div>
+
+
+
+
+
+	</section>
+
+	<th:block layout:fragment="javascript-extra">
+
+		<script th:src="@{/javascripts/vendors/uikit.min.js}"></script>
+		<script th:src="@{/javascripts/provas-tipoteste-cadastro.js}"></script>
+		<script th:src="@{/javascripts/resultado-teste-cadastro.js}"></script>
+		<script th:src="@{/javascripts/resultado-edita.js}"></script>
+		<script th:src="@{/javascripts/bpchoque.js}"></script>
+		<script th:src="@{/javascripts/pesquisa/bootstrap-select.js}"></script>
+		<script th:src="@{/javascripts/formata-campo-tempo.js}"></script>
+
+
+
+
+	</th:block>
+
+</body>
+</html>
