@@ -111,23 +111,6 @@ public class Prova {
 
 	}
 
-	public enum AptoInapto {
-		APTO("Apto"), INAPTO("Inapto");
-
-		
-		private String descricao;
-
-		AptoInapto(String descricao) {
-			this.descricao = descricao;
-			
-		}
-
-		public String getDescricao() {
-			return descricao;
-		}
-
-		
-
-	}
+	
 
 }
