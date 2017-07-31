@@ -1,25 +1,44 @@
-//TESTE_FISICO(COD_TF, DATA_TF, COD_TTF)
 package br.com.fireware.bpchoque.model.def;
 
-import java.util.List;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.data.annotation.Id;
+
 import lombok.Data;
-
 @Data
+public abstract class Resultado {
 
-public class Resultado {
+	
 
-	private Long pessoa;
+		@Id
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
+		private Long id;
 
-	private List<Long> provas;
+		@ManyToOne
+		@JoinColumn(name = "pessoa")
+		private PessoaDef pessoa;
 
-	private List<String> valores;
+		@ManyToOne
+		@OnDelete(action = OnDeleteAction.CASCADE)
+		@JoinColumn(name = "teste")
+		private TesteFisico teste;
 
-	@PrePersist
-	@PreUpdate
-	private void prePersistUpdate() {
+				
+		private Double notaFinal;
 
-	}
+		
 
+		
+
+		
+
+	
+
+	
+	
 }

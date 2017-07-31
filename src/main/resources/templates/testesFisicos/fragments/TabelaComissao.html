@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+	<div th:fragment="tabelaComissaoFrag" th:id="comissao" class="tab-pane fade">
+
+		<div class="table-responsive">
+			<table
+				class="table  table-hover table-condensed table-striped table-resultados">
+				<thead>
+					<tr>
+						<th>MATRÍCULA</th>
+						<th>NOME</th>
+						<th>FUNÇÃO</th>
+						<th></th>
+					</tr>
+				</thead>
+
+				<tbody id="listaDetalheComissao">
+
+					<tr th:each="membro : ${comissao}">
+
+						<td th:text="${membro.avaliador.pessoadef.matricula}">Matricula</td>
+						<td th:text="${membro.avaliador.pessoadef.nome}">Nome</td>
+						<td th:text="${membro.funcao}">Função</td>
+
+
+
+
+						<td class="text-center"><a
+							class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn"
+							th:title="Excluir" href="#"
+							th:attr="data-url=@{/comissoes/deleteMembro/{id}(id=${membro.id})}, data-objeto=|o membro de ${membro.avaliador.pessoadef.nome}|">
+								<i class="glyphicon glyphicon-remove"></i>
+						</a></td>
+					</tr>
+
+				</tbody>
+			</table>
+			<div class="bw-field-action__icon">
+				<a href="#" data-toggle="modal"
+					data-target="#modalAdicionaMembroComissao"> <i
+					class="glyphicon  glyphicon-plus-sign"></i> <span
+					class="hidden-xs  hidden-sm">Adicionar Membro</span>
+				</a>
+			</div>
+			<br>
+
+		</div>
+
+	</div>
+
+
+
+</body>
+</html>

@@ -11,12 +11,16 @@ import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "resultadosTafGeral")
-public class ResultadoTafGeral {
+public class ResultadoTafGeral{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +31,7 @@ public class ResultadoTafGeral {
 	private PessoaDef pessoa;
 
 	@ManyToOne
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "teste")
 	private TesteFisico teste;
 
