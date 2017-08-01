@@ -3,8 +3,9 @@ package br.com.fireware.bpchoque.controller.def;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -102,6 +103,7 @@ public class TesteFisicoController {
 		testeFisico.setData(LocalDate.now());
 		testeFisicoSalvo = false;
 		mv.addObject("testeFisico", testeFisico);
+		mv.addObject("tipos", EnumTipoTeste.values());
 
 		mv.addObject("testeFisicoSalvo", testeFisicoSalvo);
 		return mv;
@@ -236,6 +238,53 @@ public class TesteFisicoController {
 		return ResponseEntity.ok(resultado);
 
 	}
+	
+	@RequestMapping(value = "/adicionaPessoa", method = RequestMethod.POST, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	public @ResponseBody ResponseEntity<?> adicionaPessoa(@RequestBody PessoaDef pessoadef,
+			BindingResult result, RedirectAttributes attributes, Errors errors,
+			@AuthenticationPrincipal UsuarioSistema usuarioSistema) {
+		if (result.hasErrors()) {
+			return ResponseEntity.badRequest().body(result.getFieldError("corrida5km").getDefaultMessage());
+		}
+		
+		
+		Set<PessoaDef> pessoasTeste = new HashSet<PessoaDef>();
+		PessoaDef pessoa = pessoaDefService.findById(pessoadef.getId());
+		pessoasTeste.addAll(testeFisico.getPessoas());
+		pessoasTeste.add(pessoa);
+		testeFisico.setPessoas(pessoasTeste);
+		
+		
+		
+		testeFisicoService.save(testeFisico);
+		
+		if (testeFisico.getTipo() == EnumTipoTeste.TAFG) {
+			ResultadoTafGeral resultadoTaf = new ResultadoTafGeral();
+			resultadoTaf.setPessoa(pessoa);
+			resultadoTaf.setTeste(testeFisico);
+			resultadoTaf.setIdade(PessoaDef.idadeAvaliacao(pessoa.getDatanasc()));
+			resultadoTafGeralService.save(resultadoTaf);
+			
+		} else if (testeFisico.getTipo() == EnumTipoTeste.TAFGTHECDC) {
+			ResultadoTafGeral resultadoTaf = new ResultadoTafGeral();
+			resultadoTaf.setPessoa(pessoa);
+			resultadoTaf.setTeste(testeFisico);
+			resultadoTaf.setIdade(PessoaDef.idadeAvaliacao(pessoa.getDatanasc()));
+			resultadoTafGeralService.save(resultadoTaf);
+			ResultadoTheCdc resultadoTheCdc = new ResultadoTheCdc();
+			resultadoTheCdc.setPessoa(pessoa);
+			resultadoTheCdc.setTeste(testeFisico);
+			
+			resultadoTheCdcService.save(resultadoTheCdc);
+			
+			
+		}
+		
+
+		return ResponseEntity.ok(testeFisico);
+
+	}
 
 	@RequestMapping("{id}")
 	public ModelAndView edicao(@PathVariable("id") TesteFisico testeFisico) {
@@ -245,19 +294,21 @@ public class TesteFisicoController {
 		mv.addObject(testeFisico);
 
 		testeFisicoSalvo = true;
-
+		 
 		if (testeFisico.getTipo() == EnumTipoTeste.TAFG) {
 			List<ResultadoTafGeral> resultadosTaf = resultadoTafGeralService.findByTeste(testeFisico);
 			mv.addObject("resultadosTaf", resultadosTaf);
 		} else if (testeFisico.getTipo() == EnumTipoTeste.TAFGTHECDC) {
+			List<ResultadoTafGeral> resultadosTaf = resultadoTafGeralService.findByTeste(testeFisico);
+			mv.addObject("resultadosTaf", resultadosTaf);
 			List<ResultadoTheCdc> resultadosTheCdc = resultadoTheCdcService.findByTeste(testeFisico);
 			mv.addObject("resultadosTheCdc", resultadosTheCdc);
 		}
-		// List<PessoaDef> pessoasIncluir =
-		// testeFisicoService.pessoasIncluir(resultadosTaf);
+		 List<PessoaDef> pessoasIncluir = testeFisicoService.pessoasIncluir(testeFisico.getPessoas());
 
 		mv.addObject("testeFisicoSalvo", testeFisicoSalvo);
-
+		mv.addObject("pessoasIncluir", pessoasIncluir);
+		mv.addObject("tipos", EnumTipoTeste.values());
 		mv.addObject("comissao", comissaoService.findByTesteFisico(testeFisico));
 
 		return mv;

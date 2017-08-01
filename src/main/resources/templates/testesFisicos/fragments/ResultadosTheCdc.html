@@ -22,7 +22,7 @@
 
 					<tbody id="listaDetalhe">
 
-						<tr th:each="resultado : ${resultados}">
+						<tr th:each="resultado : ${resultadosTheCdc}">
 
 							<td th:text="${resultado.pessoa.matricula}"></td>
 							<td th:text="${resultado.pessoa.nome}">Nome</td>
@@ -35,7 +35,7 @@
 							
 														
 
-							<td th:text="${resultado.notaFinal}">Resultado</td>
+							
 							<td class="text-center"><a	class="btn-editar2"
 								th:href="@{/testesFisicos/editaResultadoTemp/{id}(id=${resultado.id})}"
 								th:attr="data-resultado=${resultado.id}"> <i

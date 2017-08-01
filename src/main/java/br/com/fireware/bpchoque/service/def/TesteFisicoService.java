@@ -98,25 +98,10 @@ public class TesteFisicoService {
 
 	
 
-	public List<PessoaDef> pessoasIncluir(List<ResultadoTafGeral> resultados) {
+	public List<PessoaDef> pessoasIncluir(Set<PessoaDef> pessoasInclusas) {
 		List<PessoaDef> pessoasIncluir = pessoaDefService.findAll();
-
-		Set<PessoaDef> pessoas = new HashSet<>(); // Não Permite objetos
-													// repetidos
-		for (ResultadoTafGeral resultado : resultados) {
-			pessoas.add(resultado.getPessoa());
-		}
-
-		RemoveColecao.removeOfThis(pessoasIncluir, pessoas);
-		/*
-		 * if (pessoasIncluir.size() > 0) {
-		 * 
-		 * for (int i = 0; i < pessoasIncluir.size(); i++) { for (int j = 0; j <
-		 * pessoas.size(); j++) { if (pessoas.get(j).getId() ==
-		 * pessoasIncluir.get(i).getId()) { pessoasIncluir.remove(i); } } }
-		 * 
-		 * }
-		 */
+		RemoveColecao.removeOfThis(pessoasIncluir, pessoasInclusas);
+		
 
 		return pessoasIncluir;
 	}

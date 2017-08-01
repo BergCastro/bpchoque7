@@ -6,7 +6,7 @@
 	xmlns:brewer="http://brewer.algaworks.com">
 
 <head>
-<title>Cadastro de Avaliação Coletiva</title>
+<title>Cadastro Teste Físico</title>
 <th:block layout:fragment="css-extra">
 	<link rel="stylesheet" type="text/css"
 		th:href="@{/stylesheets/pesquisa/bootstrap-select.css}" />
@@ -21,7 +21,7 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-xs-10">
-						<h1>Cadastro de Avaliação Coletiva</h1>
+						<h1>Cadastro de Teste Físico</h1>
 
 					</div>
 
@@ -50,14 +50,14 @@
 					th:field="*{criadoem}" />
 				<div class="row">
 
-					<div class="form-group  col-sm-4  bw-required">
+					<div class="form-group  col-sm-2  bw-required">
 						<label for="data" class="control-label">Data</label> <input
 							type="text" class="form-control" id="data" name="data"
 							th:field="*{data}" data-provide="datepicker"
 							data-date-language="pt-BR" data-date-autoclose="true"
 							data-date-today-highlight="true" data-date-orientation="bottom" />
 					</div>
-					<div class="form-group  col-sm-6  bw-required"
+					<div class="form-group  col-sm-5  bw-required"
 						brewer:classforerror="objetivo">
 						<label for="nome" class="control-label">Objetivo</label> <input
 							type="text" class="form-control" id="objetivo"
@@ -69,25 +69,48 @@
 							Aprovação</label> <input type="text" class="form-control js-decimal"
 							id="notaAprovacao" th:field="*{notaAprovacao}" />
 					</div>
+					<div class="form-group  col-sm-3  bw-required"
+						brewer:classforerror="tipo">
+						<label for="tipo" class="control-label">Tipo de Teste</label> <select
+							id="tipo" class="form-control" th:field="*{tipo}">
+							<option value=""></option>
+							<option th:each="tipo : ${tipos}" th:value="${tipo}"
+								th:text="${tipo.descricao}"></option>
+
+						</select>
+					</div>
 
 
 				</div>
 				<div th:if="${testeFisicoSalvo}">
 					<div class="row">
 						<div class="form-group col-sm-4">
-							<label for="participante" class="control-label">Incluir
-								Participantes</label> <select title="Selecione um participante..."
-								id="participante" class="form-control"
-								th:classappend="selectpicker" data-live-search="true">
-								<option value=""></option>
-								<option th:each="pessoa : ${pessoasIncluir}"
-									th:value="${pessoa.id}"
-									th:text="|${pessoa.matricula} - ${pessoa.nome}|"></option>
 
-							</select>
+							<div>
+								<select title="Selecione um participante..." id="participante"
+									class="form-control" th:classappend="selectpicker"
+									data-live-search="true">
+									<option value=""></option>
+									<option th:each="pessoa : ${pessoasIncluir}"
+										th:value="${pessoa.id}"
+										th:text="|${pessoa.matricula} - ${pessoa.nome}|"></option>
 
+								</select> 
+								
+								
+								
+								
+							</div>
 
 						</div>
+						<div class="form-group col-sm-2">
+							<a class="btn btn-primary" id="btn-incluir-pessoa"
+									th:title="Incluir" href="#"
+									th:attr="data-url=@{/testesFisicos/adicionaPessoa/}">Incluir
+
+								</a>
+						</div>
+
 					</div>
 
 
@@ -95,7 +118,7 @@
 
 
 
-					<br>
+
 
 					<ul class="nav nav-tabs">
 
@@ -161,7 +184,7 @@
 	<th:block layout:fragment="javascript-extra">
 
 		<script th:src="@{/javascripts/vendors/uikit.min.js}"></script>
-		<script th:src="@{/javascripts/provas-tipoteste-cadastro.js}"></script>
+		<script th:src="@{/javascripts/pessoas-testefisico-cadastro.js}"></script>
 		<script th:src="@{/javascripts/resultado-teste-cadastro.js}"></script>
 		<script th:src="@{/javascripts/resultado-edita.js}"></script>
 		<script th:src="@{/javascripts/bpchoque.js}"></script>
