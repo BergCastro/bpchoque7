@@ -289,7 +289,11 @@ public class TesteFisicoController {
 	@RequestMapping("{id}")
 	public ModelAndView edicao(@PathVariable("id") TesteFisico testeFisico) {
 		ModelAndView mv = new ModelAndView(CADASTRO_TESTE_FISICO);
-
+		Boolean hasTafg = false;
+		Boolean hasTheCdc = false;
+		Boolean hasTafge = false;
+		Boolean hasTheCoesp = false;
+		
 		this.testeFisico = testeFisico;
 		mv.addObject(testeFisico);
 
@@ -297,6 +301,7 @@ public class TesteFisicoController {
 		 
 		if (testeFisico.getTipo() == EnumTipoTeste.TAFG) {
 			List<ResultadoTafGeral> resultadosTaf = resultadoTafGeralService.findByTeste(testeFisico);
+			
 			mv.addObject("resultadosTaf", resultadosTaf);
 		} else if (testeFisico.getTipo() == EnumTipoTeste.TAFGTHECDC) {
 			List<ResultadoTafGeral> resultadosTaf = resultadoTafGeralService.findByTeste(testeFisico);

@@ -40,6 +40,7 @@ CREATE TABLE resultadosTheCoesp(
 	deslocMeioLiquido VARCHAR(10),
 	flutuacao VARCHAR(10),
 	mergulhoLivre VARCHAR(10),
+	notaFinal DECIMAL(10,2),
 	FOREIGN KEY (pessoa) REFERENCES pessoasdef(id),
 	FOREIGN KEY (teste) REFERENCES testes_fisicos(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

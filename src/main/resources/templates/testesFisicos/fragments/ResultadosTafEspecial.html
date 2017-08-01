@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	
+		<div th:fragment="resultadosTafEspecialFrag" id="resultadoTafEspecial" class="tab-pane fade in active">
+			<div class="table-responsive">
+				<table
+					class="table  table-hover table-condensed table-striped table-resultados">
+					<thead>
+						<tr>
+							<th>MATRÍCULA</th>
+							<th>NOME</th>
+							<th>FLEXÃO BARRA</th>
+							<th>ABDOMINAL</th>
+							<th>CORRIDA 12min</th>
+							<th>CORRIDA 50m</th>
+							<th></th>
+						</tr>
+					</thead>
+
+					<tbody id="listaDetalhe">
+
+						<tr th:each="resultado : ${resultadosTafEspecial}">
+
+							<td th:text="${resultado.pessoa.matricula}"></td>
+							<td th:text="${resultado.pessoa.nome}">Nome</td>
+							<td th:text="${resultado.pessoa.sexo.abreviacao}">Sexo</td>
+							<td th:text="${resultado.idade}">Idade</td>
+
+							<td	th:text="${resultado.flexaoBarra}">Flexao Barra</td>
+							<td	th:text="${resultado.abdominal}">Abdominal</td>
+							<td	th:text="|${resultado.corrida12min}">Corrida12min</td>
+							<td	th:text="${resultado.corrida50m}">Corrida50m</td>
+							
+														
+
+							<td th:text="${resultado.notaFinal}">Nota</td>
+							<td class="text-center"><a	class="btn-editar2"
+								th:href="@{/testesFisicos/editaResultadoTemp/{id}(id=${resultado.id})}"
+								th:attr="data-resultado=${resultado.id}"> <i
+									class="glyphicon  glyphicon-pencil"></i>
+							</a> <a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn"
+								th:title="Excluir" href="#"
+								th:attr="data-url=@{/testesFisicos/deleteResultado/{id}(id=${resultado.id})}, data-objeto=|o resultado de ${resultado.pessoa.nome}|">
+									<i class="glyphicon glyphicon-remove"></i>
+							</a></td>
+						</tr>
+
+					</tbody>
+				</table>
+				<div class="bw-field-action__icon">
+					<a href="#" data-toggle="modal"
+						data-target="#modalAdicionaResultadoTaf"
+						> <i
+						class="glyphicon  glyphicon-plus-sign"></i> <span
+						class="hidden-xs  hidden-sm">Adicionar Resultado</span>
+					</a>
+				</div>
+				<br>
+
+			</div>
+		</div>
+
+
+
+</body>
+</html>

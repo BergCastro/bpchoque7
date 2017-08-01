@@ -95,20 +95,20 @@
 										th:value="${pessoa.id}"
 										th:text="|${pessoa.matricula} - ${pessoa.nome}|"></option>
 
-								</select> 
-								
-								
-								
-								
+								</select>
+
+
+
+
 							</div>
 
 						</div>
 						<div class="form-group col-sm-2">
 							<a class="btn btn-primary" id="btn-incluir-pessoa"
-									th:title="Incluir" href="#"
-									th:attr="data-url=@{/testesFisicos/adicionaPessoa/}">Incluir
+								th:title="Incluir" href="#"
+								th:attr="data-url=@{/testesFisicos/adicionaPessoa/}">Incluir
 
-								</a>
+							</a>
 						</div>
 
 					</div>
@@ -123,9 +123,9 @@
 					<ul class="nav nav-tabs">
 
 						<li class="active"><a data-toggle="tab" href="#resultadoTaf"><span>TAFG</span></a></li>
-						<li><a data-toggle="tab" href="#resultadoTheCdc"><span>THE
-									CDC</span></a></li>
-
+						<li><a data-toggle="tab" href="#resultadoTheCdc"><span>THE CDC</span></a></li>
+						<li><a data-toggle="tab" href="#resultadoTafEspecial"><span>TAFGE</span></a></li>
+						<li><a data-toggle="tab" href="#resultadoTheCoesp"><span>THE COESP</span></a></li>
 
 					</ul>
 					<div id="resultsBlock">
@@ -135,6 +135,10 @@
 							<div
 								th:replace="testesFisicos/fragments/ResultadosTheCdc :: resultadosTheCdcFrag"></div>
 
+							<div
+								th:replace="testesFisicos/fragments/ResultadosTheCdc :: resultadosTafEspecialFrag"></div>
+							<div
+								th:replace="testesFisicos/fragments/ResultadosTheCdc :: resultadosTheCoespFrag"></div>
 
 						</div>
 					</div>
