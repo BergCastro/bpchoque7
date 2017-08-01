@@ -12,6 +12,7 @@
 		th:href="@{/stylesheets/pesquisa/bootstrap-select.css}" />
 
 
+
 </th:block>
 </head>
 <body>
@@ -71,25 +72,48 @@
 
 
 				</div>
+				<div th:if="${testeFisicoSalvo}">
+					<div class="row">
+						<div class="form-group col-sm-4">
+							<label for="participante" class="control-label">Incluir
+								Participantes</label> <select title="Selecione um participante..."
+								id="participante" class="form-control"
+								th:classappend="selectpicker" data-live-search="true">
+								<option value=""></option>
+								<option th:each="pessoa : ${pessoasIncluir}"
+									th:value="${pessoa.id}"
+									th:text="|${pessoa.matricula} - ${pessoa.nome}|"></option>
+
+							</select>
+
+
+						</div>
+					</div>
 
 
 
 
 
 
+					<br>
 
-				<br>
+					<ul class="nav nav-tabs">
 
-				<ul class="nav nav-tabs">
+						<li class="active"><a data-toggle="tab" href="#resultadoTaf"><span>TAFG</span></a></li>
+						<li><a data-toggle="tab" href="#resultadoTheCdc"><span>THE
+									CDC</span></a></li>
 
-					<li><a data-toggle="tab" href="#resultadoTaf"><span>TAFG</span></a></li>
-					<li><a data-toggle="tab" href="#resultadoTheCdc"><span>TAFG</span></a></li>
 
-				</ul>
-				<div id="resultsBlock">
-					<div class="tab-content">
-					<div th:replace="testesFisicos/fragments/ResultadosTaf :: resultadosTafFrag"></div>
-					<div th:replace="testesFisicos/fragments/ResultadosTheCdc :: resultadosTfeCdcFrag"></div>
+					</ul>
+					<div id="resultsBlock">
+						<div class="tab-content">
+							<div
+								th:replace="testesFisicos/fragments/ResultadosTaf :: resultadosTafFrag"></div>
+							<div
+								th:replace="testesFisicos/fragments/ResultadosTheCdc :: resultadosTheCdcFrag"></div>
+
+
+						</div>
 					</div>
 				</div>
 				<div class="row">
@@ -107,10 +131,12 @@
 			</form>
 		</div>
 
-		
-		<div
-			th:replace="testesFisicos/AdicionaResultado :: modalAdicionaResultado"></div>
 
+
+		<div
+			th:replace="testesFisicos/AdicionaResultadoTaf :: modalAdicionaResultadoTaf"></div>
+		<div
+			th:replace="testesFisicos/AdicionaResultadoTheCdc :: modalAdicionaResultadoTheCdc"></div>
 
 		<div th:replace="testesFisicos/EditaResultado :: modalEditaResultado"></div>
 
@@ -146,6 +172,7 @@
 
 
 	</th:block>
+
 
 </body>
 </html>
