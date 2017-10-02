@@ -4,12 +4,13 @@
 
 <body>
 	
-		<div th:fragment="resultadosTafEspecialFrag" id="resultadoTafEspecial" class="tab-pane fade in active">
+		<div th:fragment="resultadosTafEspecialFrag" id="resultadoTafEspecial" class="tab-pane fade">
 			<div class="table-responsive">
 				<table
 					class="table  table-hover table-condensed table-striped table-resultados">
 					<thead>
 						<tr>
+							<th>INSC.</th>
 							<th>MATRÍCULA</th>
 							<th>NOME</th>
 							<th>FLEXÃO BARRA</th>
@@ -23,7 +24,7 @@
 					<tbody id="listaDetalhe">
 
 						<tr th:each="resultado : ${resultadosTafEspecial}">
-
+							<td th:text="${resultado.inscricao}"></td>
 							<td th:text="${resultado.pessoa.matricula}"></td>
 							<td th:text="${resultado.pessoa.nome}">Nome</td>
 							<td th:text="${resultado.pessoa.sexo.abreviacao}">Sexo</td>
@@ -50,14 +51,7 @@
 
 					</tbody>
 				</table>
-				<div class="bw-field-action__icon">
-					<a href="#" data-toggle="modal"
-						data-target="#modalAdicionaResultadoTaf"
-						> <i
-						class="glyphicon  glyphicon-plus-sign"></i> <span
-						class="hidden-xs  hidden-sm">Adicionar Resultado</span>
-					</a>
-				</div>
+				
 				<br>
 
 			</div>

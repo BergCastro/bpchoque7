@@ -31,7 +31,7 @@ public class ResultadoTheCdc {
 	@JoinColumn(name = "teste")
 	private TesteFisico teste;
 
-	
+	private Integer inscricao;
 		
 	@Enumerated(EnumType.STRING)
 	private EnumAptoInapto flutuacao;

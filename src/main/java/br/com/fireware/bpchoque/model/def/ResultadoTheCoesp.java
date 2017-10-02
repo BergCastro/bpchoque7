@@ -32,7 +32,7 @@ public class ResultadoTheCoesp {
 	private TesteFisico teste;
 
 	
-		
+	private Integer inscricao;	
 	
 	private String corrida10km;
 	

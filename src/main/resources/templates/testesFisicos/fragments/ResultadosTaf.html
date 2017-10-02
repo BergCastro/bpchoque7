@@ -10,6 +10,7 @@
 					class="table  table-hover table-condensed table-striped table-resultados">
 					<thead>
 						<tr>
+							<th>INSC</th>
 							<th>MATRÍCULA</th>
 							<th>NOME</th>
 							<th>SEXO</th>
@@ -22,11 +23,11 @@
 							<th></th>
 						</tr>
 					</thead>
-
-					<tbody id="listaDetalhe">
-
-						<tr th:each="resultado : ${resultadosTaf}">
-
+					
+					<tbody id="listaDetalheTaf">
+						
+						<tr th:fragment="listaResultadosTaf" th:each="resultado : ${resultadosTaf}">
+							<td th:text="${resultado.inscricao}"></td>
 							<td th:text="${resultado.pessoa.matricula}"></td>
 							<td th:text="${resultado.pessoa.nome}">Nome</td>
 							<td th:text="${resultado.pessoa.sexo.abreviacao}">Sexo</td>
@@ -50,17 +51,11 @@
 									<i class="glyphicon glyphicon-remove"></i>
 							</a></td>
 						</tr>
-
+					
 					</tbody>
+					
 				</table>
-				<div class="bw-field-action__icon">
-					<a href="#" data-toggle="modal"
-						data-target="#modalAdicionaResultadoTaf"
-						> <i
-						class="glyphicon  glyphicon-plus-sign"></i> <span
-						class="hidden-xs  hidden-sm">Adicionar Resultado</span>
-					</a>
-				</div>
+				
 				<br>
 
 			</div>

@@ -84,61 +84,36 @@
 				</div>
 				<div th:if="${testeFisicoSalvo}">
 					<div class="row">
-						<div class="form-group col-sm-4">
-
-							<div>
-								<select title="Selecione um participante..." id="participante"
-									class="form-control" th:classappend="selectpicker"
-									data-live-search="true">
-									<option value=""></option>
-									<option th:each="pessoa : ${pessoasIncluir}"
-										th:value="${pessoa.id}"
-										th:text="|${pessoa.matricula} - ${pessoa.nome}|"></option>
-
-								</select>
-
-
-
-
-							</div>
-
-						</div>
-						<div class="form-group col-sm-2">
-							<a class="btn btn-primary" id="btn-incluir-pessoa"
-								th:title="Incluir" href="#"
-								th:attr="data-url=@{/testesFisicos/adicionaPessoa/}">Incluir
-
-							</a>
-						</div>
+						<div
+							th:replace="testesFisicos/fragments/PessoasIncluir :: pessoasIncluirFrag"></div>
 
 					</div>
 
 
 
-
-
-
-
-
 					<ul class="nav nav-tabs">
 
-						<li class="active"><a data-toggle="tab" href="#resultadoTaf"><span>TAFG</span></a></li>
-						<li><a data-toggle="tab" href="#resultadoTheCdc"><span>THE CDC</span></a></li>
-						<li><a data-toggle="tab" href="#resultadoTafEspecial"><span>TAFGE</span></a></li>
-						<li><a data-toggle="tab" href="#resultadoTheCoesp"><span>THE COESP</span></a></li>
+						<li th:if="${hasTafg}" class="active"><a data-toggle="tab"
+							href="#resultadoTaf"><span>TAFG</span></a></li>
+						<li th:if="${hasTheCdc}"><a data-toggle="tab"
+							href="#resultadoTheCdc"><span>THE CDC</span></a></li>
+						<li th:if="${hasTafge}"><a data-toggle="tab"
+							href="#resultadoTafEspecial"><span>TAFGE</span></a></li>
+						<li th:if="${hasTheCoesp}"><a data-toggle="tab"
+							href="#resultadoTheCoesp"><span>THE COESP</span></a></li>
 
 					</ul>
 					<div id="resultsBlock">
 						<div class="tab-content">
-							<div
+							<div th:if="${hasTafg}"
 								th:replace="testesFisicos/fragments/ResultadosTaf :: resultadosTafFrag"></div>
-							<div
+							<div th:if="${hasTheCdc}"
 								th:replace="testesFisicos/fragments/ResultadosTheCdc :: resultadosTheCdcFrag"></div>
 
-							<div
-								th:replace="testesFisicos/fragments/ResultadosTheCdc :: resultadosTafEspecialFrag"></div>
-							<div
-								th:replace="testesFisicos/fragments/ResultadosTheCdc :: resultadosTheCoespFrag"></div>
+							<div th:if="${hasTafge}"
+								th:replace="testesFisicos/fragments/ResultadosTafEspecial :: resultadosTafEspecialFrag"></div>
+							<div th:if="${hasTheCoesp}"
+								th:replace="testesFisicos/fragments/ResultadosTheCoesp :: resultadosTheCoespFrag"></div>
 
 						</div>
 					</div>

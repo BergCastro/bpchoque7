@@ -35,7 +35,7 @@ public class ResultadoTafEspecial{
 	@JoinColumn(name = "teste")
 	private TesteFisico teste;
 
-	
+	private Integer inscricao;
 
 	private Integer flexaoBarra;
 

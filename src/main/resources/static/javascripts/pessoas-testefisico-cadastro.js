@@ -17,6 +17,7 @@ Brewer.PessoaTesteCadastro = (function() {
 	PessoaTesteCadastro.prototype.iniciar = function() {
 		
 		this.botaoIncluir.on('click', onBotaoIncluirClick.bind(this));
+		onAtualiza
 	}
 	
 	
@@ -47,10 +48,40 @@ Brewer.PessoaTesteCadastro = (function() {
 		//this.form.find('.form-group').addClass('has-error');
 	}
 	
+	function onAtualizaPessoasIncluir(obj) {
+		$("#pessoasIncluirBlock").load('/testesFisicos/atualizaPessoasIncluir');
+	}
+	
+	function onAtualizaResultados(obj) {
+		$("#listaDetalheTaf").load('/testesFisicos/atualizaResultadosTaf');
+		$("#listaDetalheTheCdc").load('/testesFisicos/atualizaResultadosTheCdc');
+	}
+	
+	function onAtualizaJavascript(obj) {
+		$("#javascriptBloco").load('/testesFisicos/atualizaJavaScript');
+	}
+	
 	function onEstiloSalvo(estilo) {
 		
-		//var corpoTabela = $('#tabelaProvasBlock');
-		//$("#tabelaProvasBlock").load('/tiposTeste/atualizaProvas');
+		
+		
+		this.inputParticipante.focus();
+		
+		onAtualizaPessoasIncluir();
+		onAtualizaResultados();
+		onAtualizaJavascript();
+		
+		
+		
+		//$.getScript('/javascripts/vendors/uikit.min.js');
+		//$.getScript('/stylesheets/pesquisa/bootstrap-select.css');
+		
+		//$.getScript('/layout/javascripts/vendors.min.js');
+		//$.getScript('/javascripts/pesquisa/bootstrap-select.js');
+		//$.getScript('/javascripts/pessoas-testefisico-cadastro.js');
+		
+		
+		
 		//$("#blocoModalProva").load('/tiposTeste/atualizaModal');
 		
 		

@@ -138,16 +138,42 @@ public class TesteFisicoController {
 		}
 	}
 
-	/*
-	 * @RequestMapping("/resultados") public String ajaxBrands(Model model) {
-	 * List<ResultadoTeste> resultados =
-	 * resultadoTesteService.findByTeste(testeFisico);
-	 * System.out.println("Entrou no ajaxResultados");
-	 * model.addAttribute("resultados", resultados); model.addAttribute("tipos",
-	 * testeFisico.getTipos()); model.addAttribute("pessoasIncluir",
-	 * testeFisicoService.pessoasIncluir(resultados)); return
-	 * "testesFisicos/CadastroTesteFisico :: resultadosFrag"; }
-	 */
+	
+	 @RequestMapping("/atualizaResultadosTaf") 
+	 public String atualizaResultadosTaf(Model model) {
+	 
+	 
+		 List<ResultadoTafGeral> resultadosTaf = resultadoTafGeralService.findByTeste(testeFisico);
+		 model.addAttribute("resultadosTaf", resultadosTaf);
+		 System.out.println("Entrou atualizaTaf");
+		 return "testesFisicos/fragments/ResultadosTaf :: listaResultadosTaf";
+	 
+		
+	 }
+	 @RequestMapping("/atualizaResultadosTheCdc") 
+	 public String atualizaResultadosTheCdc(Model model) {
+	 
+	 
+		 List<ResultadoTheCdc> resultadosTheCdc = resultadoTheCdcService.findByTeste(testeFisico);
+		 model.addAttribute("resultadosTheCdc", resultadosTheCdc);
+		 System.out.println("Entrou atualizaThe");
+		 return "testesFisicos/fragments/ResultadosTheCdc :: listaResultadosTheCdc";
+	 
+		
+	 }
+	 
+	 @RequestMapping("/atualizaPessoasIncluir") 
+	 public String atualizaPessoasIncluir(Model model) {
+	 
+	 
+		 List<PessoaDef> pessoasIncluir = testeFisicoService.pessoasIncluir(testeFisico.getPessoas());
+		 model.addAttribute("pessoasIncluir", pessoasIncluir);
+		System.out.println("Entrou atualizaPesssoasIncluir");
+		 return "testesFisicos/fragments/PessoasIncluir :: pessoasIncluirFrag";
+	 
+		
+	 }
+	 
 
 	/*
 	 * @GetMapping("/atualizaEditaResultado/{id}") public String
@@ -255,27 +281,31 @@ public class TesteFisicoController {
 		pessoasTeste.add(pessoa);
 		testeFisico.setPessoas(pessoasTeste);
 		
-		
+		Integer novaInscricao = null;
 		
 		testeFisicoService.save(testeFisico);
 		
 		if (testeFisico.getTipo() == EnumTipoTeste.TAFG) {
+			novaInscricao = resultadoTafGeralService.findByTeste(testeFisico).size()+1;
 			ResultadoTafGeral resultadoTaf = new ResultadoTafGeral();
 			resultadoTaf.setPessoa(pessoa);
 			resultadoTaf.setTeste(testeFisico);
 			resultadoTaf.setIdade(PessoaDef.idadeAvaliacao(pessoa.getDatanasc()));
+			resultadoTaf.setInscricao(novaInscricao);
 			resultadoTafGeralService.save(resultadoTaf);
 			
 		} else if (testeFisico.getTipo() == EnumTipoTeste.TAFGTHECDC) {
+			novaInscricao = resultadoTafGeralService.findByTeste(testeFisico).size()+1;
 			ResultadoTafGeral resultadoTaf = new ResultadoTafGeral();
 			resultadoTaf.setPessoa(pessoa);
 			resultadoTaf.setTeste(testeFisico);
 			resultadoTaf.setIdade(PessoaDef.idadeAvaliacao(pessoa.getDatanasc()));
+			resultadoTaf.setInscricao(novaInscricao);
 			resultadoTafGeralService.save(resultadoTaf);
 			ResultadoTheCdc resultadoTheCdc = new ResultadoTheCdc();
 			resultadoTheCdc.setPessoa(pessoa);
 			resultadoTheCdc.setTeste(testeFisico);
-			
+			resultadoTheCdc.setInscricao(novaInscricao);
 			resultadoTheCdcService.save(resultadoTheCdc);
 			
 			
@@ -301,16 +331,21 @@ public class TesteFisicoController {
 		 
 		if (testeFisico.getTipo() == EnumTipoTeste.TAFG) {
 			List<ResultadoTafGeral> resultadosTaf = resultadoTafGeralService.findByTeste(testeFisico);
-			
+			hasTafg = true;
 			mv.addObject("resultadosTaf", resultadosTaf);
 		} else if (testeFisico.getTipo() == EnumTipoTeste.TAFGTHECDC) {
+			hasTafg = true;
+			hasTheCdc = true;
 			List<ResultadoTafGeral> resultadosTaf = resultadoTafGeralService.findByTeste(testeFisico);
 			mv.addObject("resultadosTaf", resultadosTaf);
 			List<ResultadoTheCdc> resultadosTheCdc = resultadoTheCdcService.findByTeste(testeFisico);
 			mv.addObject("resultadosTheCdc", resultadosTheCdc);
 		}
 		 List<PessoaDef> pessoasIncluir = testeFisicoService.pessoasIncluir(testeFisico.getPessoas());
-
+		mv.addObject("hasTafg", hasTafg);
+		mv.addObject("hasTheCdc", hasTheCdc);
+		mv.addObject("hasTafge", hasTafge);
+		mv.addObject("hasTheCoesp", hasTheCoesp);
 		mv.addObject("testeFisicoSalvo", testeFisicoSalvo);
 		mv.addObject("pessoasIncluir", pessoasIncluir);
 		mv.addObject("tipos", EnumTipoTeste.values());

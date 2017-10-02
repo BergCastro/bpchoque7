@@ -10,6 +10,7 @@
 					class="table  table-hover table-condensed table-striped table-resultados">
 					<thead>
 						<tr>
+							<th>INSC.</th>
 							<th>MATRÍCULA</th>
 							<th>NOME</th>
 							<th>CORRIDA 5KM</th>
@@ -20,10 +21,10 @@
 						</tr>
 					</thead>
 
-					<tbody id="listaDetalhe">
+					<tbody id="listaDetalheTheCdc">
 
-						<tr th:each="resultado : ${resultadosTheCdc}">
-
+						<tr th:fragment="listaResultadosTheCdc" th:each="resultado : ${resultadosTheCdc}">
+							<td th:text="${resultado.inscricao}"></td>
 							<td th:text="${resultado.pessoa.matricula}"></td>
 							<td th:text="${resultado.pessoa.nome}">Nome</td>
 							
@@ -49,14 +50,7 @@
 
 					</tbody>
 				</table>
-				<div class="bw-field-action__icon">
-					<a href="#" data-toggle="modal"
-						data-target="#modalAdicionaResultado"
-						> <i
-						class="glyphicon  glyphicon-plus-sign"></i> <span
-						class="hidden-xs  hidden-sm">Adicionar Resultado</span>
-					</a>
-				</div>
+				
 				<br>
 
 			</div>

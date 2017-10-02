@@ -73,10 +73,10 @@ $(function() {
   }
 
   AW.initMenu();
-  AW.initStickyTableHeaders();
+ // AW.initStickyTableHeaders();
   
   // Enable Bootstrap tooltip
-  $('.js-tooltip').tooltip();
+  //$('.js-tooltip').tooltip();
   
   // Bind events
   $('.js-sidebar-toggle').bind('click', AW.onSidebarToggleRequest);

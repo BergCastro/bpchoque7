@@ -34,6 +34,8 @@ public class ResultadoTafGeral{
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "teste")
 	private TesteFisico teste;
+	
+	private Integer inscricao;
 
 	private Integer idade;
 

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<div th:fragment="pessoasIncluirFrag" id="pessoasIncluirBlock">
+	
+		<div  >
+
+			<div class="form-group col-sm-4" >
+<!-- 			th:classappend="selectpicker" -->
+				<select title="Selecione um participante..." id="participante"
+					class="selectpicker form-control " 
+					data-live-search="true">
+					<option value=""></option>
+					<option  th:each="pessoa : ${pessoasIncluir}"
+						th:value="${pessoa.id}"
+						th:text="|${pessoa.matricula} - ${pessoa.nome}|"></option>
+
+				</select>
+
+
+
+
+			</div>
+
+		
+		<div class="form-group col-sm-2">
+			<a class="btn btn-primary" id="btn-incluir-pessoa" th:title="Incluir"
+				href="#" th:attr="data-url=@{/testesFisicos/adicionaPessoa/}">Incluir
+
+			</a>
+		</div>
+		</div>
+
+	
+<!-- 		<script th:src="@{/layout/javascripts/vendors.min.js}"></script>  -->
+<!-- 		<script th:src="@{/javascripts/vendors/uikit.min.js}"></script> -->
+<!-- 		<script th:src="@{/javascripts/pessoas-testefisico-cadastro.js}"></script> -->
+		
+		
+<!-- 		<script th:src="@{/javascripts/bpchoque.js}"></script> -->
+<!-- 		<script th:src="@{/javascripts/pesquisa/bootstrap-select.js}"></script> -->
+		
+	
+	
+	</div>
+	
+</body>
+</html>
